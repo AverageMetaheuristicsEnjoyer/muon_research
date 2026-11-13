@@ -31,6 +31,9 @@ if [ "$code" = 0 ]; then
       timeout 600s python -u cloud/components.py "$category"
       code=$?
     fi
+  elif [ "$mode" = raw ]; then
+    timeout 600s python -u cloud/raw_probe.py
+    code=$?
   else
     timeout 1800s python -u cloud/smoke.py "$mode" "$category"
     code=$?
