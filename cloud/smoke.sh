@@ -24,8 +24,17 @@ if [ "$code" = 0 ]; then
   code=$?
 fi
 if [ "$code" = 0 ]; then
-  timeout 1800s python -u cloud/smoke.py "$mode" "$category"
-  code=$?
+  if [ "$mode" = components ]; then
+    python -m pip install --no-cache-dir --no-deps trl==0.29.0
+    code=$?
+    if [ "$code" = 0 ]; then
+      timeout 600s python -u cloud/components.py "$category"
+      code=$?
+    fi
+  else
+    timeout 1800s python -u cloud/smoke.py "$mode" "$category"
+    code=$?
+  fi
 fi
 echo "RECSYS_EXIT=$code"
 echo "$code" > "$RECSYS_RESULTS/exit-code.txt"
