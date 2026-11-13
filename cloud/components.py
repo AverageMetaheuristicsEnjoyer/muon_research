@@ -78,6 +78,14 @@ try:
             summary["checks"][module] = "imported"
         except Exception:
             summary["checks"][module] = {"error": traceback.format_exc()}
+    from trl import GRPOConfig
+    config = GRPOConfig(output_dir=str(work / "rl-config"), use_cpu=True, bf16=False,
+                        report_to="none", num_generations=2,
+                        per_device_train_batch_size=2, per_device_eval_batch_size=2)
+    summary["checks"]["rl_configuration_interface"] = {
+        "max_prompt_length_present": hasattr(config, "max_prompt_length"),
+        "required_at": "minionerec_engine/minionerec_trainer.py:350",
+    }
     print("COMPONENT_SUMMARY", json.dumps(summary), flush=True)
 finally:
     (results / "components.json").write_text(json.dumps(summary, indent=2))

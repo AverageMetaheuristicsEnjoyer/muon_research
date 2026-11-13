@@ -20,7 +20,7 @@ python -m venv --system-site-packages "$RECSYS_WORK/venv"
 code=$?
 if [ "$code" = 0 ]; then
   export PATH="$RECSYS_WORK/venv/bin:$PATH"
-  python -m pip install --no-cache-dir fire==0.7.1
+  python -m pip install --no-cache-dir fire==0.7.1 wandb==0.22.2
   code=$?
 fi
 if [ "$code" = 0 ]; then
